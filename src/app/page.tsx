@@ -1,170 +1,161 @@
-"use client";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "@/components/ui/carousel";
 
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardHeader, CardContent } from "@/components/ui/card";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+import { DataTransfer } from "./_features/_components/genres";
+import { FeatureMovies } from "./_features/_components/poster";
+import { UpComingData } from "./_features/_components/upcomingData";
+import { PopularData } from "./_features/_components/popularData";
+import { TopRated } from "./_features/_components/topRated";
+import SeeMoreButton from "./_features/_components/SeeMoreButton";
+import { Footer } from "./_features/_components/Footer";
+import { Default } from "./_features/_components/Default"
+import { MovieGrid } from "./_features/_components/MovieGrid";
 
-
-const mockMovies = [
-  { id: 1, title: "Dune: Part Two", year: 2024, type: "Movie" },
-  { id: 2, title: "Oppenheimer", year: 2023, type: "Movie" },
-  { id: 3, title: "Barbie", year: 2023, type: "Movie" },
-  {
-    id: 4,
-    title: "Spider-Man: Across the Spider-Verse",
-    year: 2023,
-    type: "Movie",
-  },
-  { id: 5, title: "John Wick: Chapter 4", year: 2023, type: "Movie" },
-  { id: 6, title: "The Batman", year: 2022, type: "Movie" },
-  { id: 7, title: "Guardians of the Galaxy Vol. 3", year: 2023, type: "Movie" },
-  { id: 8, title: "Avatar: The Way of Water", year: 2022, type: "Movie" },
-  { id: 9, title: "Wonka", year: 2023, type: "Movie" },
-  { id: 10, title: "Inside Out 2", year: 2024, type: "Movie" },
-  {
-    id: 11,
-    title: "Mission: Impossible – Dead Reckoning",
-    year: 2023,
-    type: "Movie",
-  },
-  { id: 12, title: "Interstellar", year: 2014, type: "Movie" },
-];
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#f3f4f6] text-[#020617] flex flex-col">
+    <main className="min-h-screen bg-[#f3f4f6]">
       {/* HEADER */}
-      <header className="h-[72px] bg-white border-b border-slate-200 flex items-center justify-between px-10">
-        {/* logo */}
+      <header className="h-[64px] flex items-center justify-between px-10 border-b border-gray-200 bg-white">
         <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-[#4338CA]" />
-          <span className="font-semibold text-lg tracking-wide text-slate-900">
-            Movie Z
-          </span>
+          <img src="/Vector.png" alt="logo icon" />
+          <img src="/Movie Z.png" alt="MovieZ" />
         </div>
 
-        {/* nav */}
-        <nav className="hidden md:flex items-center gap-6 text-sm text-slate-500">
-          <button className="hover:text-slate-900">Home</button>
-          <button className="hover:text-slate-900">Movies</button>
-          <button className="hover:text-slate-900">TV Shows</button>
-          <button className="hover:text-slate-900">My List</button>
-        </nav>
+        <div className="flex flex-1 items-center gap-3 max-w-[600px] mx-8">
+          <NavigationMenu className="h-9 bg-white rounded-md border border-[#E4E4E7]">
+            <NavigationMenuItem>
+              <NavigationMenuTrigger className="px-4 py-2 text-sm font-medium">
+                Genres
+              </NavigationMenuTrigger>
+              <NavigationMenuContent className="border border-[#E4E4E7] rounded-lg w-[557px] h-[333px] bg-white px-5 py-4">
+                <div className="flex flex-col gap-1">
+                  <p className="text-[24px] text-[#09090B] leading-6 font-semibold">
+                    Genres
+                  </p>
+                  <p className="text-[16px] text-[#09090B] leading-6">
+                    See lists of movies by genre
+                  </p>
+                </div>
+                <div className="mt-4 w-full border-b border-[#E4E4E7]" />
+                <div className="w-full flex flex-wrap gap-4 mt-5">
+                  {DataTransfer.map((item, index) =>
+                    Default({ key: index, name: item.name })
+                  )}
+                </div>
+              </NavigationMenuContent>
+            </NavigationMenuItem>
+          </NavigationMenu>
 
-        {/* search + avatar */}
-        <div className="flex items-center gap-3">
-          <div className="hidden sm:flex items-center gap-2 bg-slate-50 border border-slate-200 rounded-full px-3 py-1.5">
-            <input
-              className="bg-transparent outline-none text-xs text-slate-600 w-40"
-              placeholder="Search movies, TV shows..."
+          <div className="flex flex-1 items-center gap-2 border rounded px-2 py-1 bg-white">
+            <Search className="w-4 h-4 text-gray-500" />
+            <Input
+              type="text"
+              placeholder="Search..."
+              className="w-full text-sm border-none shadow-none focus-visible:ring-0"
             />
           </div>
-          <div className="w-8 h-8 rounded-full bg-slate-300" />
         </div>
+
+        <Button className="w-8 h-8 rounded bg-gray-200 p-0">
+          <img src="/Vector (2).png" alt="mode" />
+        </Button>
       </header>
 
-      {/* CONTENT */}
-      <section className="flex-1 px-10 py-6 flex flex-col gap-6">
-        {/* HERO + GRID ROW */}
-        <div className="flex flex-col lg:flex-row gap-6">
-          {/* HERO LEFT */}
-          <div className="lg:w-[360px] w-full rounded-2xl overflow-hidden bg-white shadow-sm border border-slate-200 flex flex-col">
-            <div className="relative h-[220px] bg-gradient-to-r from-[#4338CA] via-[#6366F1] to-[#EC4899]">
-              {/* poster image placeholder */}
-              <div className="absolute inset-0 bg-[url('https://images.pexels.com/photos/7991310/pexels-photo-7991310.jpeg?auto=compress&cs=tinysrgb&w=1200')] bg-cover bg-center" />
-              {/* overlay gradient */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-black/10" />
+      {/* HERO / CAROUSEL */}
+      <section className="px-10 pt-6">
+        <Carousel className="w-full">
+          <CarouselContent>
+            {FeatureMovies.map((movie) => (
+              <CarouselItem key={movie.id}>
+                <div className="relative w-full h-[420px] rounded-xl overflow-hidden">
+                  <img
+                    src={movie.image}
+                    alt={movie.title}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
 
-              {/* text */}
-              <div className="relative z-10 h-full flex flex-col justify-end p-5 text-white">
-                <p className="text-[10px] uppercase tracking-[0.25em] text-white/70 mb-1">
-                  Featured today
-                </p>
-                <h1 className="text-2xl font-bold leading-snug mb-1">
-                  The Witcher: Wild Hunt
-                </h1>
-                <p className="text-[11px] text-white/80 line-clamp-2 mb-3">
-                  A monster hunter struggles to find his place in a world where
-                  people often prove more wicked than beasts.
-                </p>
-                <div className="flex items-center gap-3">
-                  <button className="px-4 py-1.5 rounded-full bg-white text-[11px] font-semibold text-slate-900">
-                    Watch now
-                  </button>
-                  <button className="px-4 py-1.5 rounded-full border border-white/60 text-[11px] font-semibold text-white/90">
-                    Add to list
-                  </button>
-                </div>
-              </div>
-            </div>
+                  <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-black/40 to-black/0" />
 
-            <div className="flex items-center justify-between px-4 py-3 bg-white">
-              <span className="text-[11px] text-slate-500">
-                IMDB 8.7 • Action • 2024 • 2h 16m
-              </span>
-              <button className="text-[11px] font-medium text-[#4338CA]">
-                + Follow
-              </button>
-            </div>
-          </div>
+                  <div className="relative z-10 flex h-full items-center px-10">
+                    <div className="max-w-md text-white">
+                      <p className="text-sm opacity-80 mb-1">Now Playing</p>
 
-          {/* RIGHT SIDE: TABS + GRID */}
-          <div className="flex-1 flex flex-col">
-            {/* tabs row */}
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex gap-2 text-xs">
-                <button className="px-4 py-1.5 rounded-full bg-[#4338CA] text-white font-medium">
-                  Popular
-                </button>
-                <button className="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-                  Upcoming
-                </button>
-                <button className="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-                  Top rated
-                </button>
-                <button className="px-4 py-1.5 rounded-full bg-white border border-slate-200 text-slate-600 hover:bg-slate-50">
-                  Now playing
-                </button>
-              </div>
+                      <h1 className="text-4xl font-bold mb-3">
+                        {movie.title}
+                      </h1>
 
-              <button className="text-[11px] text-[#4338CA] hover:underline">
-                See all
-              </button>
-            </div>
+                      <div className="flex items-center gap-2 text-sm mb-4">
+                        <span>⭐ {movie.rating} / 10</span>
+                      </div>
 
-            {/* movie grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-              {mockMovies.map((movie) => (
-                <div
-                  key={movie.id}
-                  className="bg-white rounded-xl overflow-hidden border border-slate-200 shadow-sm hover:shadow-md hover:-translate-y-0.5 transition-all cursor-pointer"
-                >
-                  {/* poster placeholder */}
-                  <div className="h-40 bg-slate-200" />
-                  <div className="p-3 flex flex-col gap-1">
-                    <p className="text-[11px] text-slate-500">
-                      {movie.type} • {movie.year}
-                    </p>
-                    <h3 className="text-sm font-semibold text-slate-900 line-clamp-2">
-                      {movie.title}
-                    </h3>
+                      <p className="text-xs leading-5 opacity-90 mb-6">
+                        {movie.description}
+                      </p>
+
+                      <Button
+                        variant="outline"
+                        className="bg-white text-black text-sm font-medium px-5 py-2 rounded-full border-none"
+                      >
+                        Watch Trailer
+                      </Button>
+                    </div>
                   </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+
+          <CarouselPrevious className="left-4" />
+          <CarouselNext className="right-4" />
+        </Carousel>
+      </section>
+
+      {/* UPCOMING */}
+      <section className="px-10 py-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-[#09090B]">Upcoming</h2>
+          <SeeMoreButton href="/upcoming" />
         </div>
 
-        {/* доор өөр секц нэмэх бол эндээс үргэлжлүүлнэ */}
+        <MovieGrid data={UpComingData} />
+      </section>
+
+      {/* POPULAR */}
+      <section className="px-10 pb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-[#09090B]">Popular</h2>
+          <SeeMoreButton href="/popular" />
+        </div>
+
+        <MovieGrid data={PopularData} />
+      </section>
+
+      {/* TOP RATED */}
+      <section className="px-10 pb-8">
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-xl font-semibold text-[#09090B]">Top Rated</h2>
+          <SeeMoreButton href="/top-rated" />
+        </div>
+
+        <MovieGrid data={TopRated} />
       </section>
 
       {/* FOOTER */}
-      <footer className="h-16 bg-[#4338CA] flex items-center justify-center mt-4">
-        <p className="text-[11px] text-white/80 tracking-wide">
-          © 2024 Movie Z. All rights reserved.
-        </p>
-      </footer>
+      <Footer />
     </main>
   );
 }
